@@ -2,7 +2,7 @@ package com.lambdaschool.school.view;
 
 public interface CountStudentsInCourses
 {
-    long getCourseId();
+    long getCourseid();
     String getCoursename();
     int getCountstudents();
 }
