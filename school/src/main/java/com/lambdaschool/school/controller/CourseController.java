@@ -8,6 +8,8 @@ import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +30,29 @@ public class CourseController
     private CourseService courseService;
 
     @ApiOperation(value = "Lists all courses", responseContainer = "List")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(
+                name = "page",
+                dataType = "integer",
+                paramType = "query",
+                value = "Results page you want to retrieve (0..N)"),
+            @ApiImplicitParam(
+                name = "size",
+                dataType = "integer",
+                paramType = "query",
+                value = "Number of records per page."),
+            @ApiImplicitParam(
+                name = "sort",
+                allowMultiple = true,
+                dataType = "string",
+                paramType = "query",
+                value = "Sorting criteria in the format: property(,asc|desc). " + "Default sort order is ascending. " + "Multiple sort criteria are supported.")
+    })
     @GetMapping(value = "/courses", produces = {"application/json"})
-    public ResponseEntity<?> listAllCourses(HttpServletRequest req)
+    public ResponseEntity<?> listAllCourses(HttpServletRequest req,@PageableDefault(page = 0,size = 3) Pageable pageable)
     {
         Log(req);
-        ArrayList<Course> myCourses = courseService.findAll();
+        ArrayList<Course> myCourses = courseService.findAll(pageable);
         return new ResponseEntity<>(myCourses, HttpStatus.OK);
     }
 
