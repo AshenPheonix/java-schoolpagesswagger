@@ -1,19 +1,24 @@
 package com.lambdaschool.school.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@ApiModel(value = "Instructor", description = "The Instructor Model")
 @Entity
 @Table(name = "instructor")
 public class Instructor
 {
+    @ApiModelProperty(value = "Instructor Id", name = "instructid", required = true, example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long instructid;
 
+    @ApiModelProperty(value = "Instructor Name", name = "instructname", example = "name")
     private String instructname;
 
     @OneToMany(mappedBy = "instructor")
